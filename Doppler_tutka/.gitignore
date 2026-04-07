@@ -1,0 +1,8 @@
+.pio
+.vscode
+.sdkconfig*
+sdkconfig
+node_modules
+build/
+*.bin
+*.elf
