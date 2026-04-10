@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8">
+  <title>HB100 BLE Test</title>
+</head>
+<body>
+
+<h1>HB100 Ball Speed</h1>
+
+<button id="connect">Connect Bluetooth</button>
+<p id="status">Not connected</p>
+<p id="speed">-- km/h</p>
+
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+  import { getFirestore } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyAMpIsInCMi_OeLk3KKLladZuR-DFGnQUo",
+    authDomain: "hb100radar.firebaseapp.com",
+    projectId: "hb100radar",
+    storageBucket: "hb100radar.firebasestorage.app",
+    messagingSenderId: "190497361918",
+    appId: "1:190497361918:web:b3fad99750190b9a18baaf",
+    measurementId: "G-4KJX3Y89VS"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+</script>
+
+  window.db = getFirestore(app);
+</script>
+
+  console.log("Firestore DB:", window.db);
+
+<!-- JavaScript must be loaded like this -->
+<script type="module" src="./app.js"></script>
+
+
+</body>
+</html>
