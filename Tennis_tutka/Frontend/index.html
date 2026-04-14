@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8">
+  <title>HB100 BLE Test</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <h1>HB100 Ball Speed</h1>
+
+  <div id="auth-box" class="box">
+    <h2>Kirjaudu sisään</h2>
+    <p id="user-info">Et ole kirjautunut sisään.</p>
+    <button id="login-btn">Kirjaudu sisään</button>
+    <button id="logout-btn" style="display: none;">Kirjaudu ulos</button>
+  </div>
+
+  <div id="sessio" class="box">
+    <h2>Mittaussessio</h2>
+    <button id="yhdistä">Yhdistä tutkaan (Bluetooth)</button>
+    <button id="aloita-btn" disabled>Aloita sessio</button>
+    <p id="status">Not connected</p>
+    
+    <div class="nykyinen-nopeus">
+      <h3>Nykyinen nopeus</h3>
+      <p id="nopeus" style="font-size: 2em; font-weight: bold;">-- km/h</p>
+      <p id="max-nopeus">Session maksimi: -- km/h</p>
+      <button id="reset">Nollaa nopeus</button>
+    </div>
+  </div>
+
+  <div id="nopein" class="box">
+    <h2>Omat nopeimmat lyöntini</h2>
+    <p>Tänään: <span id="nopein-tänään">--</span></p>
+    <p>Tällä viikolla: <span id="nopein-viikko">--</span></p>
+    <p>Kaikkien aikojen: <span id="nopein-koko-aika">--</span></p>
+  </div>
+
+  <div id="keskiarvo" class="box">
+    <h2>Omat keskiarvoni</h2>
+    <p>Tänään: <span id="keskiarvo-tänään">--</span></p>
+    <p>Tällä viikolla: <span id="keskiarvo-viikko">--</span></p>
+    <p>Kaikkien aikojen: <span id="keskiarvo-koko-aika">--</span></p>
+  </div>
+
+  <div id="top50" class="box">
+    <h2>Top Pelaajat</h2>
+    <ul id="top50">
+      <li>Ladataan...</li>
+    </ul>
+    <button id="show-more-btn">Näytä Top 50</button>
+  </div>
+
+  <script type="module" src="./app.js"></script>
+</body>
