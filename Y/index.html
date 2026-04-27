@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nopeusmittari</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header>
+    <h1>Nopeusmittari</h1>
+  </header>
+
+  <main>
+    <section id="auth-box" class="box">
+      <h2>Kuka pelaa?</h2>
+      <input type="text" id="nickname-input" placeholder="Syötä pelaajan nimi">
+      <button id="set-name-btn">Aloita</button>
+    </section>
+
+    <section id="user-info-box" class="box hidden">
+      <p>Pelaaja: <span id="current-player-name"></span></p>
+      <button id="logout-btn">Vaihda pelaajaa</button>
+    </section>
+
+    <section id="sessio" class="box hidden">
+      <h2>Tutkan yhdistäminen</h2>
+
+      <button id="connect-radarA">Yhdistä tutka 1</button>
+      <button id="connect-radarB">Yhdistä tutka 2</button>
+
+      <p id="status">Ei yhteyttä</p>
+
+      <div class="speed-display">
+        <h3>Nykyinen nopeus</h3>
+        <p id="nopeus">-- km/h</p>
+        <p id="max-nopeus">Session maksimi: -- km/h</p>
+        <button id="start-session">Aloita</button>
+        <button id="stop-session" disabled>Lopeta</button>
+
+        <ul id="session-list"></ul>
+      </div>
+    </section>
+
+    <section id="nopein" class="box hidden">
+      <h2>Omat nopeimmat lyöntini</h2>
+      <p>Tänään: <span id="nopein-tänään">--</span></p>
+      <p>Tällä viikolla: <span id="nopein-viikko">--</span></p>
+      <p>Kaikkien aikojen: <span id="nopein-koko-aika">--</span></p>
+    </section>
+
+    <section id="keskiarvo" class="box hidden">
+      <h2>Omien lyöntien keskiarvot</h2>
+      <p>Tänään: <span id="keskiarvo-tänään">--</span></p>
+      <p>Tällä viikolla: <span id="keskiarvo-viikko">--</span></p>
+      <p>Kaikkien aikojen: <span id="keskiarvo-koko-aika">--</span></p>
+    </section>
+
+    <section id="top50-box" class="box">
+      <h2>Top 50 Kovimmat lyönnit</h2>
+      <ul id="top50-list">
+        <li>Ladataan...</li>
+      </ul>
+    </section>
+  </main>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
