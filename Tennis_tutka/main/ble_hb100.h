@@ -10,6 +10,7 @@ extern "C" {
 
 void ble_hb100_init(void);
 
+void ble_start_advertising(void);
 
 void ble_notify_ball_speed(float speed_kmh);
 

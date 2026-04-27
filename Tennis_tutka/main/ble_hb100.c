@@ -1,3 +1,12 @@
+/****************************************
+ HB100 BLE toteutus
+ GAP = Mainostut ja yhteydet
+ GATT = Palvelut ja data
+ *****************************************/
+
+/*=============
+    Kirjastot
+===============*/
 #include <stdio.h>
 #include <string.h>
 #include "ble_hb100.h"
@@ -12,20 +21,23 @@
 #include "services/gap/ble_svc_gap.h"
 #include "services/gatt/ble_svc_gatt.h"
 
-// HB100 service UUID määrittely
+/*============================
+HB100 service UUID määrittely
+==============================*/
+
 static const ble_uuid128_t hb100_service_uuid =  // Määrittelee GATT servicen yksilöllisen tunnisteen, web bluetooth etsii palvelun tällä UUID:lla
     BLE_UUID128_INIT(0xFB,0x34,0x9B,0x5F,0x80,0x00,0x00,0x80,
                       0x00,0x10,0x00,0x00,0x01,0x00,0x00,0x00);
 
 // Pallon nopeus characteristic UUID määrittely
-static const ble_uuid128_t ball_speed_char_uuid = // Määrittelee yksittäisen datakentän esim pallon nopeus
+static const ble_uuid128_t ball_speed_char_uuid = // Määrittelee yksittäisen datakentän pallon nopeudelle ja selain tilaa sitten tämän kentän notificaation
     BLE_UUID128_INIT(0xFB,0x34,0x9B,0x5F,0x80,0x00,0x00,0x80,
                       0x00,0x10,0x00,0x00,0x02,0x00,0x00,0x00);
 
-static uint16_t ball_speed_char_handle; //BLE stack antaa numeron tälle, Jotta BLE tietää mihin notify lähetetään
+static uint16_t ball_speed_char_handle; //NimBLE antaa tälle numeron, Jotta BLE tietää mihin notificaatio lähetetään
 static uint16_t conn_handle = 0; // BLE yhteyden tunniste 0 = ei yhteyttä
 static bool client_subscribed = false; // Tämä kertoo, onko selain tilannut notificaationit, BLE ei lähetä dataa ennen kuin selain tilaa ja tämä muuttuu silloin trueksi
-static uint8_t own_addr_type; // BLE osoitetyyppi, selvittää osoitteen yhdistäessä
+static uint8_t own_addr_type; // BLE osoitetyyppi, selvittää automaattisesti osoitteen yhdistäessä
 
 static int gatt_access_cb(uint16_t conn_handle, // NimBLE vaatii tämän käyttöä vaikka tässä sitä ei käytetä. Tämä kutsuttaisiin jos sovellus yrittää READ tai WRITE
                           uint16_t attr_handle,
@@ -35,16 +47,20 @@ static int gatt_access_cb(uint16_t conn_handle, // NimBLE vaatii tämän käytt�
     return 0;
 }
 
+/*========================================================
+    GATT rakenteen käsittely, eli koko BLE:n tietorakenne
+==========================================================*/
+
 static const struct ble_gatt_svc_def gatt_svcs[] = { // GATT rakenne eli määritellään BLE:n datamalli, kaikki mitä voidaan lukea/tilata on tässä
     {
-        .type = BLE_GATT_SVC_TYPE_PRIMARY, // Tämä on pääpalvelu joka lukee selaimessa
-        .uuid = &hb100_service_uuid.u, // Tämä liittää servicen aikaisemmin määriteltyyn UUID:iin
+        .type = BLE_GATT_SVC_TYPE_PRIMARY, // Tämä määrittelee pääpalvelun
+        .uuid = &hb100_service_uuid.u, // Tämä liittää palvelun HB100:n UUID:hen
         .characteristics = (struct ble_gatt_chr_def[]) { // Servicen sisällä olevat kentät
             {
                 .uuid = &ball_speed_char_uuid.u, // Pallon nopeud kenttä
                 .access_cb = gatt_access_cb, // Callback sille, että jos joku yrittää suorittaa READ/WRITE
                 .val_handle = &ball_speed_char_handle, // Handlen tallennus myöhempää notifyä varten
-                .flags = BLE_GATT_CHR_F_NOTIFY, // Tässä sallitaan notify mutta ei sallita READ/WRTIE
+                .flags = BLE_GATT_CHR_F_NOTIFY, // Tässä sallitaan pelkkä notify mutta ei sallita READ/WRTIE
             },
             { 0 } // lista loppuu nollaan
         },
@@ -54,8 +70,11 @@ static const struct ble_gatt_svc_def gatt_svcs[] = { // GATT rakenne eli määri
 
 static const char *TAG = "BLE_MIN"; // Logien tunniste
 
-/* ===== GAP event handler ===== */
-static int ble_gap_event(struct ble_gap_event *event, void *arg) // Kaikki BLE tapahtumat tulevat tänne
+/*=======================
+    GAP event käsittely 
+========================= */
+
+static int ble_gap_event(struct ble_gap_event *event, void *arg) // Kaikki BLE tapahtumat kulkevat tämän kautta
 {
     switch (event->type) { //Tarkistaa mikä BLE tapahtuma tapahtui
 
@@ -67,7 +86,7 @@ case BLE_GAP_EVENT_SUBSCRIBE: // Subscribe event, tämä tapahtuu kun selain "pa
     }
     break;
 
-    case BLE_GAP_EVENT_CONNECT:
+    case BLE_GAP_EVENT_CONNECT: // Connectin toiminnallisuus
     if (event->connect.status == 0) {
         conn_handle = event->connect.conn_handle;
         ESP_LOGI(TAG, "Connected");
@@ -76,7 +95,7 @@ case BLE_GAP_EVENT_SUBSCRIBE: // Subscribe event, tämä tapahtuu kun selain "pa
     }
     break;
     
-case BLE_GAP_EVENT_DISCONNECT: // Disconnect 
+case BLE_GAP_EVENT_DISCONNECT: // Disconnectin toiminnallisuus
     ESP_LOGI(TAG, "Disconnected");
     conn_handle = 0;
     client_subscribed = false;
@@ -98,7 +117,10 @@ case BLE_GAP_EVENT_DISCONNECT: // Disconnect
     return 0;
 }
 
-/* ===== Advertising ===== */
+/*========================
+    Advertising käsittely
+========================== */
+
 static void ble_app_advertise(void) // Täällä luodaan mainosdata, konfiguroidaan mainostus ja käynnistetään mainostus
 {
     struct ble_gap_adv_params adv_params; // Miten sanotaan
@@ -163,7 +185,10 @@ void ble_host_task(void *param) // BLE-stackin ydin
 
 
 /* ===== main ===== */
-/* ===== BLE Alustus ===== */
+
+/*===============
+    BLE Alustus 
+================= */
 void ble_hb100_init(void)
 {
     // Huom: NVS flash init on siirretty main.c -tiedostoon!
