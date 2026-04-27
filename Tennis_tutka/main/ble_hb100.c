@@ -4,9 +4,7 @@
  GATT = Palvelut ja data
  *****************************************/
 
-/*=============
-    Kirjastot
-===============*/
+ //  Kirjastot
 #include <stdio.h>
 #include <string.h>
 #include "ble_hb100.h"
@@ -21,10 +19,8 @@
 #include "services/gap/ble_svc_gap.h"
 #include "services/gatt/ble_svc_gatt.h"
 
-/*============================
-HB100 service UUID määrittely
-==============================*/
 
+//HB100 service UUID määrittely
 static const ble_uuid128_t hb100_service_uuid =  // Määrittelee GATT servicen yksilöllisen tunnisteen, web bluetooth etsii palvelun tällä UUID:lla
     BLE_UUID128_INIT(0xFB,0x34,0x9B,0x5F,0x80,0x00,0x00,0x80,
                       0x00,0x10,0x00,0x00,0x01,0x00,0x00,0x00);
@@ -47,14 +43,8 @@ static int gatt_access_cb(uint16_t conn_handle, // NimBLE vaatii tämän käytt�
     return 0;
 }
 
-/*========================================================
-    GATT rakenteen käsittely, eli koko BLE:n tietorakenne
-==========================================================*/
 
-static const struct ble_gatt_svc_def gatt_svcs[] = { // GATT rakenne eli määritellään BLE:n datamalli, kaikki mitä voidaan lukea/tilata on tässä
-    {
-        .type = BLE_GATT_SVC_TYPE_PRIMARY, // Tämä määrittelee pääpalvelun
-        .uuid = &hb100_service_uuid.u, // Tämä liittää palvelun HB100:n UUID:hen
+//    GATT rakenteen käsittely, eli koko BLE:n tietorakenne
         .characteristics = (struct ble_gatt_chr_def[]) { // Servicen sisällä olevat kentät
             {
                 .uuid = &ball_speed_char_uuid.u, // Pallon nopeud kenttä
@@ -70,11 +60,8 @@ static const struct ble_gatt_svc_def gatt_svcs[] = { // GATT rakenne eli määri
 
 static const char *TAG = "BLE_MIN"; // Logien tunniste
 
-/*=======================
-    GAP event käsittely 
-========================= */
 
-static int ble_gap_event(struct ble_gap_event *event, void *arg) // Kaikki BLE tapahtumat kulkevat tämän kautta
+//    GAP event käsittely 
 {
     switch (event->type) { //Tarkistaa mikä BLE tapahtuma tapahtui
 
@@ -117,10 +104,8 @@ case BLE_GAP_EVENT_DISCONNECT: // Disconnectin toiminnallisuus
     return 0;
 }
 
-/*========================
-    Advertising käsittely
-========================== */
 
+//    Advertising käsittely
 static void ble_app_advertise(void) // Täällä luodaan mainosdata, konfiguroidaan mainostus ja käynnistetään mainostus
 {
     struct ble_gap_adv_params adv_params; // Miten sanotaan
@@ -186,9 +171,8 @@ void ble_host_task(void *param) // BLE-stackin ydin
 
 /* ===== main ===== */
 
-/*===============
-    BLE Alustus 
-================= */
+
+//    BLE Alustus 
 void ble_hb100_init(void)
 {
     // Huom: NVS flash init on siirretty main.c -tiedostoon!
