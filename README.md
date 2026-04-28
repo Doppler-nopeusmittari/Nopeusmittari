@@ -7,10 +7,10 @@ This project utilizes an HB100 Doppler radar to detect speeds. The system measur
 * HB100
 * OPA2350
 
-![PCB in KiCA](https://github.com/user-attachments/assets/b5c4189e-4d58-45c8-89a2-462b95a89837)
+![PCB in KiCA](https://github.com/user-attachments/assets/b5c4189e-4d58-45c8-89a2-462b95a89837)<br>
 *PCB layout designed in KiCAD*
 
-![Working PCB](https://github.com/user-attachments/assets/dd95163b-00fb-45d2-9450-a6dd59393946)
+![Working PCB](https://github.com/user-attachments/assets/dd95163b-00fb-45d2-9450-a6dd59393946)<br>
 *The assembled and working PCB*
 
 ## Embedded Software
