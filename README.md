@@ -28,15 +28,20 @@ This project utilizes an HB100 Doppler radar to detect speeds. The system measur
 </p>
 
 ## Embedded Software
+
 [![Espressif](https://img.shields.io/badge/ESP--IDF-E7352C?style=for-the-badge&logo=espressif&logoColor=white)](https://developer.espressif.com/tags/esp-idf/)
+
 [![C](https://img.shields.io/badge/C-00599C?style=for-the-badge&logo=c&logoColor=white)](https://en.cppreference.com/w/c)
+
 [![NimBLE](https://img.shields.io/badge/NimBLE-2C8EBB?style=for-the-badge&logo=bluetooth&logoColor=white)](https://h2zero.github.io/NimBLE-Arduino/)
 
 ## User Interface
 
-![HTML](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)(#)
-![CSS](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)(#)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)(#)
+[![HTML](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](#)
+
+[![CSS](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](#)
+
+[![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](#)
 
 ## How It Works (Architecture)
 1. The **HB100** radar outputs a very small Intermediate Frequency (IF) signal based on the Doppler shift.
