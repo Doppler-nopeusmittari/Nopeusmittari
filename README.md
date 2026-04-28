@@ -15,10 +15,9 @@ This project utilizes an HB100 Doppler radar to detect speeds. The system measur
 *The assembled and working PCB*
 
 ## Embedded Software
-
-![Espressif](https://img.shields.io/badge/ESP--IDF-E7352C?style=for-the-badge&logo=espressif&logoColor=white)
-![C](https://img.shields.io/badge/C-00599C?style=for-the-badge&logo=c&logoColor=white)
-![NimBLE](https://img.shields.io/badge/NimBLE-2C8EBB?style=for-the-badge&logo=bluetooth&logoColor=white)
+[![Espressif](https://img.shields.io/badge/ESP--IDF-E7352C?style=for-the-badge&logo=espressif&logoColor=white)](https://developer.espressif.com/tags/esp-idf/)
+[![C](https://img.shields.io/badge/C-00599C?style=for-the-badge&logo=c&logoColor=white)](https://en.cppreference.com/w/c)
+[![NimBLE](https://img.shields.io/badge/NimBLE-2C8EBB?style=for-the-badge&logo=bluetooth&logoColor=white)](https://h2zero.github.io/NimBLE-Arduino/)
 
 ## User Interface
 
