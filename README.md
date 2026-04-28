@@ -6,7 +6,7 @@ This project utilizes an HB100 Doppler radar to detect speeds. The system measur
 * **Accurate Speed Detection:** Measures target speeds ranging from 50 km/h to 200 km/h.
 * **Real-time Data:** Streams speed data instantly via Bluetooth Low Energy (NimBLE).
 * **Wireless Web UI:** A browser-based interface that connects directly to the ESP32.
-* **Cloud Logging:** Automatically saves measured speeds and timestamps to a Firebase Database for tracking and analysis.
+* **Cloud Logging:** The Web UI saves measured speeds and timestamps to a Firebase Database for tracking and analysis.
 * **Custom Hardware:** PCB designed for integrated ESP32-S3, HB100 sensor, and signal amplification.
 
 ## Hardware & Circuit
@@ -50,7 +50,7 @@ This project utilizes an HB100 Doppler radar to detect speeds. The system measur
 2. The **OPA2350** op-amp amplifies and filters this signal.
 3. The **ESP32-S3** reads the amplified signal via its ADC, processes the data in C to calculate the frequency using FFT (and thus speed), and acts as a BLE server using **NimBLE**.
 4. The **Web UI** connects to the ESP32 via Web Bluetooth API, updating the speed dynamically on the screen.
-5. The system pushes the recorded data to a **Firebase Database**, allowing data storage and historical data visualization.
+5. The **Web UI** pushes the recorded data to a **Firebase Database**, allowing data storage and data visualization.
 
 ## Acknowledgments
 * [Vehicle Speed Measurement Using Doppler Effect (Thesis)](https://www.theseus.fi/bitstream/handle/10024/496044/Thesis.pdf?sequence=2)
