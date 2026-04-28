@@ -2,6 +2,13 @@
 
 This project utilizes an HB100 Doppler radar to detect speeds. The system measures frequency shifts between 800 Hz and 3500 Hz—corresponding to speeds of 50 to 200 km/h—and streams the data to a real-time web interface.
 
+## Features
+* **Accurate Speed Detection:** Measures target speeds ranging from 50 km/h to 200 km/h.
+* **Real-time Data:** Streams speed data instantly via Bluetooth Low Energy (NimBLE).
+* **Wireless Web UI:** A browser-based interface that connects directly to the ESP32.
+* **Cloud Logging:** Automatically saves measured speeds and timestamps to a Firebase Database for historical tracking and analysis.
+* **Custom Hardware:** PCB designed for integrated ESP32-S3, HB100 sensor, and signal amplification.
+
 ## Hardware & Circuit
 
 * ESP32-S3-WROOM1-N8R8
@@ -21,9 +28,9 @@ This project utilizes an HB100 Doppler radar to detect speeds. The system measur
 
 ## User Interface
 
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![HTML](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)(#)
+![CSS](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)(#)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)(#)
 
 ## Acknowledgments
 * [Vehicle Speed Measurement Using Doppler Effect (Thesis)](https://www.theseus.fi/bitstream/handle/10024/496044/Thesis.pdf?sequence=2)
