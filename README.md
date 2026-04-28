@@ -6,7 +6,7 @@ This project utilizes an HB100 Doppler radar to detect speeds. The system measur
 * **Accurate Speed Detection:** Measures target speeds ranging from 50 km/h to 200 km/h.
 * **Real-time Data:** Streams speed data instantly via Bluetooth Low Energy (NimBLE).
 * **Wireless Web UI:** A browser-based interface that connects directly to the ESP32.
-* **Cloud Logging:** Automatically saves measured speeds and timestamps to a Firebase Database for historical tracking and analysis.
+* **Cloud Logging:** Automatically saves measured speeds and timestamps to a Firebase Database for tracking and analysis.
 * **Custom Hardware:** PCB designed for integrated ESP32-S3, HB100 sensor, and signal amplification.
 
 ## Hardware & Circuit
@@ -42,6 +42,8 @@ This project utilizes an HB100 Doppler radar to detect speeds. The system measur
 [![CSS](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](#)
 
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](#)
+
+[![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)](https://firebase.google.com/)
 
 ## How It Works (Architecture)
 1. The **HB100** radar outputs a very small Intermediate Frequency (IF) signal based on the Doppler shift.
