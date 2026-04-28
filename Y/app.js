@@ -97,6 +97,14 @@ let sessionHitCounter = 0;
 let currentEventId = null;
 let currentPlayerName = null;
 
+/*==============================
+  Dual tutkan timeout käsittely
+===============================*/
+const DUAL_TIMEOUT_MS = 120; // kuinka kauan odotetaan toista tutkaa
+
+let dualTimer = null;
+let dualFirstRadar = null;
+
 // BLE yhteyksien tila, tallentaa kummankin tutkan BLE laitteen ja nopeuskarakteristiikan
 const radars = {
   radarA: { device: null, characteristic: null },
@@ -232,37 +240,60 @@ let dualShot = {
   radarB: null
 };
 
-function handleDualRadar(speed, radarId) {   // Kutsutaan, kun jompikumpi tutka lähettää tuloksen
-  console.log(`${radarId} speed:`, speed); // Debug: Kumpi tutka ja mikä nopeus?
+function handleDualRadar(speed, radarId) {
+  console.log(`${radarId} speed:`, speed);
 
-  // Tallentaa nopeuden oikealle tutkalle
-  if (speed > 0) {
-    dualShot[radarId] = speed;
+  // Tallennetaan arvo tutkan mukaan
+  dualShot[radarId] = speed;
+
+  // Jos tämä on ENSIMMÄINEN tutka tässä lyönnissä
+  if (!dualFirstRadar) {
+    dualFirstRadar = radarId;
+
+    // Käynnistetään timeout
+    dualTimer = setTimeout(() => {
+      // Timeout → toinen tutka EI ehtinyt mukaan
+      const singleSpeed = dualShot[dualFirstRadar];
+
+      if (singleSpeed != null) {
+        finalizeDualResult(singleSpeed, "single-fallback");
+      }
+    }, DUAL_TIMEOUT_MS);
   }
 
-  // Odottaa, että molemmat tutkat ovat antaneet arvon
-  if (dualShot.radarA !== null && dualShot.radarB !== null) {
-    const finalSpeed = Math.max( // Valitsee suurimman nopeuden
+  // Jos MOLEMMAT tutkat ovat antaneet arvon ennen timeoutia
+  if (dualShot.radarA != null && dualShot.radarB != null) {
+    clearTimeout(dualTimer);
+
+    const finalSpeed = Math.max(
       dualShot.radarA,
       dualShot.radarB
     );
 
-    saveFinalResult({ // Tallentaa suurimman nopeuden 
-      mode: "dual",
-      final_speed: finalSpeed
-    });
-
-    // Resetoi seuraavaa lyöntiä varten
-    dualShot = { radarA: null, radarB: null };
-
-    sessionSpeeds.push(finalSpeed);
-
-    sessionHitCounter++; // Listaa sen hetkisen session lyönnit
-
-    const li = document.createElement("li"); // Määritellään mitä haetaan databasesta
-    li.textContent = `#${sessionHitCounter}: (${new Date().toLocaleTimeString()}): ${finalSpeed.toFixed(1)} km/h`;
-    sessionListEl.appendChild(li);
+    finalizeDualResult(finalSpeed, "dual");
   }
+}
+
+function finalizeDualResult(speed, mode) {
+  if (!sessionActive) return;
+  saveFinalResult({
+    mode: mode,
+    final_speed: speed
+  });
+
+  sessionSpeeds.push(speed);
+  sessionHitCounter++;
+
+  const li = document.createElement("li");
+  li.textContent =
+    `#${sessionHitCounter}: (${new Date().toLocaleTimeString()}): ` +
+    `${speed.toFixed(1)} km/h`;
+  sessionListEl.appendChild(li);
+
+  // Resetoi duallogiikan tila
+  dualShot = { radarA: null, radarB: null };
+  dualFirstRadar = null;
+  dualTimer = null;
 }
 
 const HIT_COOLDOWN_MS = 200; // 200ms viive ettei tule tuplamittauksia
@@ -339,7 +370,7 @@ characteristic.addEventListener( // Ajetaan aina kun ESP lähettää datapaketin
 }
 
 
-    setStatus(`${radarId} Tutka yhdistetty`); // Päivittää UI:n
+    setStatus(`${radarId} yhdistetty`); // Päivittää UI:n
   } catch (err) {
     console.error(err);
     setStatus("BLE error");
@@ -487,6 +518,14 @@ startBtn.addEventListener("click", () => { // Mittauksen aloitusnappi
 });
 
 stopBtn.addEventListener("click", () => { // Mittauksen lopetusnappi
+// Pysäytä mahdollinen käynnissä oleva dual-timeout
+  if (dualTimer) {
+    clearTimeout(dualTimer);
+    dualTimer = null;
+    dualFirstRadar = null;
+    dualShot = { radarA: null, radarB: null };
+}
+
   sessionActive = false;
   sessionSpeeds = [];
   sessionHitCounter = 0; // NOLLAUS

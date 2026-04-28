@@ -67,7 +67,7 @@ button:hover {
 }
 
 button:disabled {
-  background-color: #ccc;
+  background-color: #f8c772;
 }
 
 input[type="text"] {
